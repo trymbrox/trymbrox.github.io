@@ -32,11 +32,11 @@
 </p>
 
 <p>
-<button id="fastButton">Fast</button>
+<button id="fastButton">Faster</button>
 </p>
 
 <p>
-<button id="slowButton">Slow</button>
+<button id="slowButton">Slower</button>
 </p>
 
 <p>
@@ -159,9 +159,9 @@ function onFastButtonClick(){
     return;
   }
   
-  let encoder = new TextEncoder('utf-8');
+  let encoderfixed = new TextEncoder('utf-8');
   let value = fast;
-  CharacteristicTx.writeValue(encoder.encode(value))
+  CharacteristicTx.writeValue(encoderfixed.encode(value))
 
   .then(_ => {
     log('sent: ' + value);
@@ -199,6 +199,14 @@ document.querySelector('#connectButton').addEventListener('click', function() {
 
 document.querySelector('#writeButton').addEventListener('click', function() {
   onWriteButtonClick();
+});
+
+document.querySelector('#fastButton').addEventListener('click', function() {
+  onFastButtonClick();
+});
+
+document.querySelector('#slowButton').addEventListener('click', function() {
+  onSlowButtonClick();
 });
 
 </script>
