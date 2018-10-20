@@ -1,0 +1,174 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Sample illustrating the use of Web Bluetooth / Write Descriptor.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Web Bluetooth / Write Descriptor Sample</title>
+    <script async="" src="https://www.google-analytics.com/analytics.js"></script><script>
+      // Add a global error event listener early on in the page load, to help ensure that browsers
+      // which don't support specific functionality still end up displaying a meaningful message.
+      window.addEventListener('error', function(error) {
+        if (ChromeSamples && ChromeSamples.setStatus) {
+          console.error(error);
+          ChromeSamples.setStatus(error.message + ' (Your browser may not support this feature.)');
+          error.preventDefault();
+        }
+      });
+    </script>
+    
+    <link rel="stylesheet" href="main.css">
+    
+  </head>
+
+<body>
+
+<p>
+<button id="connectButton">Connect</button>
+</p>
+
+<p>
+  <input id="uartText" type="text" placeholder="Write text to send">
+  <button id="writeButton">Send text</button>
+</p>
+
+<h3>Live Output</h3>
+<div id="output" class="output">
+  <div id="content"></div>
+  <div id="status"></div>
+  <pre id="log"></pre>
+</div>
+
+<script>
+
+  var ChromeSamples = {
+    log: function() {
+      var line = Array.prototype.slice.call(arguments).map(function(argument) {
+        return typeof argument === 'string' ? argument : JSON.stringify(argument);
+      }).join(' ');
+      document.querySelector('#log').textContent += line + '\n';
+    },
+    clearLog: function() {
+      document.querySelector('#log').textContent = '';
+    },
+    setStatus: function(status) {
+      document.querySelector('#status').textContent = status;
+    },
+    setContent: function(newContent) {
+      var content = document.querySelector('#content');
+      while(content.hasChildNodes()) {
+        content.removeChild(content.lastChild);
+      }
+      content.appendChild(newContent);
+    }
+  };
+
+  </script>
+
+  <script>
+
+  var CharacteristicTx;
+  var CharacteristicRx;
+  let toggle_value = 0;
+
+  let serviceUuid = '6e400001-b5a3-f393-e0a9-e50e24dcca9e';
+  let characteristicUuidTx = '6e400002-b5a3-f393-e0a9-e50e24dcca9e'
+  let characteristicUuidRx = '6e400003-b5a3-f393-e0a9-e50e24dcca9e'
+
+  function onConnectButtonClick() {
+
+    log('Requesting Bluetooth Device with Nordic Uart Service');
+    navigator.bluetooth.requestDevice({
+        filters: [{
+        services: [serviceUuid]
+      }]
+    })
+    .then(device => {
+      log('Connecting to GATT Server...');
+      return device.gatt.connect();
+    })
+    .then(server => {
+      log('Getting Service...');
+      return server.getPrimaryService(serviceUuid);
+    })
+    .then(service => {
+      log('Getting Characteristics...');
+      return service.getCharacteristics();
+    })
+    .then(characteristics => {
+
+      let queue = Promise.resolve();
+
+      characteristics.forEach(characteristic => {
+        switch (characteristic.uuid) {
+          case characteristicUuidRx:
+            log("storing characteristic Rx")
+            CharacteristicRx = characteristic;
+            break;
+
+          case characteristicUuidTx:
+            log("storing characteristic Tx")
+            CharacteristicTx = characteristic;
+            break;
+        }
+      })
+
+      return queue;
+    })
+    .catch(error => {
+      document.querySelector('#writeButton').disabled = true;
+      log('Argh! ' + error);
+    });
+  } 
+
+function onWriteButtonClick(){
+  if(!CharacteristicTx)
+  {
+    log("Device is not connected, push the connect button.");
+    return;
+  }
+  
+  let encoder = new TextEncoder('utf-8');
+  let value = document.querySelector('#uartText').value;
+  CharacteristicTx.writeValue(encoder.encode(value))
+
+  .then(_ => {
+    log('sent: ' + value);
+  })
+  .catch(error => {
+    log('Argh! ' + error);
+  });
+}
+
+document.querySelector('#connectButton').addEventListener('click', function() {
+  if (isWebBluetoothEnabled()) {
+    ChromeSamples.clearLog();
+    onConnectButtonClick();
+  }
+});
+
+document.querySelector('#writeButton').addEventListener('click', function() {
+  onWriteButtonClick();
+});
+
+</script>
+
+<script>
+  log = ChromeSamples.log;
+  function isWebBluetoothEnabled() {
+    if (navigator.bluetooth) {
+      return true;
+    } else {
+      ChromeSamples.setStatus('Web Bluetooth API is not available.\n' +
+          'Please make sure the "Experimental Web Platform features" flag is enabled.');
+      return false;
+    }
+  }
+</script>
+
+</body>
+</html>
