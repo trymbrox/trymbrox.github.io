@@ -32,11 +32,11 @@
 </p>
 
 <p>
-<button id="fastButton">Faster</button>
+<button id="fastButton">Fastt</button>
 </p>
 
 <p>
-<button id="slowButton">Slower</button>
+<button id="slowButton">Sloew</button>
 </p>
 
 <p>
@@ -159,9 +159,9 @@ function onFastButtonClick(){
     return;
   }
   
-  let encoderfixed = new TextEncoder('utf-8');
-  let value = fast;
-  CharacteristicTx.writeValue(encoderfixed.encode(value))
+  let encoder = new TextEncoder('utf-8');
+  let value = "fast";
+  CharacteristicTx.writeValue(encoder.encode(value))
 
   .then(_ => {
     log('sent: ' + value);
@@ -179,7 +179,7 @@ function onSlowButtonClick(){
   }
   
   let encoder = new TextEncoder('utf-8');
-  let value = slow;
+  let value = "slow";
   CharacteristicTx.writeValue(encoder.encode(value))
 
   .then(_ => {
