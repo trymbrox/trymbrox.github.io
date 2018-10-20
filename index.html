@@ -5,11 +5,11 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="Sample illustrating the use of Web Bluetooth / Write Descriptor.">
+    <meta name="description" content="Web Bluetooth App to access the pönsjBOAL">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <title>Web Bluetooth / Write Descriptor Sample</title>
-    <script async="" src="https://www.google-analytics.com/analytics.js"></script><script>
+    <title>pönsjBOAL</title>
+    <script async src="https://www.google-analytics.com/analytics.js"></script><script>
       // Add a global error event listener early on in the page load, to help ensure that browsers
       // which don't support specific functionality still end up displaying a meaningful message.
       window.addEventListener('error', function(error) {
@@ -29,6 +29,14 @@
 
 <p>
 <button id="connectButton">Connect</button>
+</p>
+
+<p>
+<button id="fastButton">Fast</button>
+</p>
+
+<p>
+<button id="slowButton">Slow</button>
 </p>
 
 <p>
@@ -138,6 +146,42 @@ function onWriteButtonClick(){
 
   .then(_ => {
     log('sent: ' + value);
+  })
+  .catch(error => {
+    log('Argh! ' + error);
+  });
+}
+
+function onFastButtonClick(){
+  if(!CharacteristicTx)
+  {
+    log("Device is not connected, push the connect button.");
+    return;
+  }
+  
+  let encoder = new TextEncoder('utf-8');
+  CharacteristicTx.writeValue(encoder.encode(fast))
+
+  .then(_ => {
+    log('sent: ' + fast);
+  })
+  .catch(error => {
+    log('Argh! ' + error);
+  });
+}
+
+function onSlowButtonClick(){
+  if(!CharacteristicTx)
+  {
+    log("Device is not connected, push the connect button.");
+    return;
+  }
+  
+  let encoder = new TextEncoder('utf-8');
+  CharacteristicTx.writeValue(encoder.encode(slow))
+
+  .then(_ => {
+    log('sent: ' + slow);
   })
   .catch(error => {
     log('Argh! ' + error);
