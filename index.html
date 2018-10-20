@@ -22,27 +22,39 @@
     </script>
     
     <link rel="stylesheet" href="main.css">
-    
-  </head>
+    <style type="text/css">
+    body,td,th {
+	font-family: Roboto, Helvetica, Arial, sans-serif;
+}
+body {
+	background-image: url();
+	background-repeat: no-repeat;
+	background-color: #d7d7d7;
+}
+    </style>
+</head>
 
 <body>
 
+<p><img src="Stuff/moozepunsj.png" width="800" height="268"></p>
 <p>
 <button id="connectButton">Connect</button>
 </p>
 
 <p>
-<button id="fastButton">Fastt</button>
+<button id="fastButton">Fasta</button>
 </p>
 
 <p>
-<button id="slowButton">Sloew</button>
+<button id="slowButton">Slowa</button>
 </p>
 
+<!--
 <p>
   <input id="uartText" type="text" placeholder="Write text to send">
   <button id="writeButton">Send text</button>
 </p>
+-->
 
 <h3>Live Output</h3>
 <div id="output" class="output">
@@ -129,10 +141,13 @@
     })
     .catch(error => {
       document.querySelector('#writeButton').disabled = true;
+	  document.querySelector('#fastButton').disabled = true;
+	  document.querySelector('#slowButton').disabled = true;
       log('Argh! ' + error);
     });
   } 
 
+/*
 function onWriteButtonClick(){
   if(!CharacteristicTx)
   {
@@ -151,6 +166,7 @@ function onWriteButtonClick(){
     log('Argh! ' + error);
   });
 }
+*/
 
 function onFastButtonClick(){
   if(!CharacteristicTx)
@@ -197,9 +213,11 @@ document.querySelector('#connectButton').addEventListener('click', function() {
   }
 });
 
+/*
 document.querySelector('#writeButton').addEventListener('click', function() {
   onWriteButtonClick();
 });
+*/
 
 document.querySelector('#fastButton').addEventListener('click', function() {
   onFastButtonClick();
@@ -208,6 +226,7 @@ document.querySelector('#fastButton').addEventListener('click', function() {
 document.querySelector('#slowButton').addEventListener('click', function() {
   onSlowButtonClick();
 });
+
 
 </script>
 
