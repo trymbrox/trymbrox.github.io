@@ -160,10 +160,11 @@ function onFastButtonClick(){
   }
   
   let encoder = new TextEncoder('utf-8');
-  CharacteristicTx.writeValue(encoder.encode(fast))
+  let value = fast;
+  CharacteristicTx.writeValue(encoder.encode(value))
 
   .then(_ => {
-    log('sent: ' + fast);
+    log('sent: ' + value);
   })
   .catch(error => {
     log('Argh! ' + error);
@@ -178,10 +179,11 @@ function onSlowButtonClick(){
   }
   
   let encoder = new TextEncoder('utf-8');
-  CharacteristicTx.writeValue(encoder.encode(slow))
+  let value = slow;
+  CharacteristicTx.writeValue(encoder.encode(value))
 
   .then(_ => {
-    log('sent: ' + slow);
+    log('sent: ' + value);
   })
   .catch(error => {
     log('Argh! ' + error);
