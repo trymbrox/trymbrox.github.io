@@ -26,7 +26,7 @@ h3 {
 
 button {
     text-align: center;
-    width: 100%;
+    width: 80%;
     margin: auto;
     display: block;
     margin-top: 5px;
@@ -64,8 +64,12 @@ input {
   background-color: #f0f0f0;
   border-radius: 0.75em;
   display: block;
-  margin: 0.5em;
+  margin: auto;
   padding: 0.5em;
+  width: 80%;
+  margin-top: 5px;
+  margin-bottom: 5px;
+
 }
 
 #status {
