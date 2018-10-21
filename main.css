@@ -6,7 +6,7 @@ body {
 
 @media screen and (min-width: 832px) {
   body {
-    width: 800px;
+    width: 790px;
     margin: 0 auto;
   }
 }
@@ -26,7 +26,7 @@ h3 {
 
 button {
     text-align: center;
-    width: 80%;
+    width: 75%;
     margin: auto;
     display: block;
     margin-top: 5px;
@@ -65,8 +65,8 @@ input {
   border-radius: 0.75em;
   display: block;
   margin: auto;
-  padding: 0.5em;
-  width: 80%;
+  padding: 20px;
+  width: 70%;
   margin-top: 5px;
   margin-bottom: 5px;
 
