@@ -276,6 +276,24 @@ function onPartyButtonClick(){
     log('Argh! ' + error);
   });
 }
+function onPartyButtonClick(){
+  if(!CharacteristicTx)
+  {
+    log("Device is not connected, push the connect button.");
+    return;
+  }
+  
+  let encoder = new TextEncoder('utf-8');
+  let value = "strobe";
+  CharacteristicTx.writeValue(encoder.encode(value))
+
+  .then(_ => {
+    log('sent: ' + value);
+  })
+  .catch(error => {
+    log('Argh! ' + error);
+  });
+}
 
 function onSlowButtonClick(){
   if(!CharacteristicTx)
@@ -323,6 +341,9 @@ document.querySelector('#fastButton').addEventListener('click', function() {
 });
 document.querySelector('#partyButton').addEventListener('click', function() {
   onPartyButtonClick();
+});
+document.querySelector('#strobeButton').addEventListener('click', function() {
+  onStrobeButtonClick();
 });
 
 document.querySelector('#slowButton').addEventListener('click', function() {
