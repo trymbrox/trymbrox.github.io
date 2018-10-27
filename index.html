@@ -91,6 +91,9 @@ body {
 <div align="center">
 <button class="button" id="strobeButton">Strobe</button>
 </div>
+<div align="center">
+<button class="button" id="fogButton">Mist</button>
+</div>
 
 </body>
 </html>
@@ -294,6 +297,24 @@ function onStrobeButtonClick(){
     log('Argh! ' + error);
   });
 }
+function onMistButtonClick(){
+  if(!CharacteristicTx)
+  {
+    log("Device is not connected, push the connect button.");
+    return;
+  }
+  
+  let encoder = new TextEncoder('utf-8');
+  let value = "mist";
+  CharacteristicTx.writeValue(encoder.encode(value))
+
+  .then(_ => {
+    log('sent: ' + value);
+  })
+  .catch(error => {
+    log('Argh! ' + error);
+  });
+}
 
 function onSlowButtonClick(){
   if(!CharacteristicTx)
@@ -344,6 +365,9 @@ document.querySelector('#partyButton').addEventListener('click', function() {
 });
 document.querySelector('#strobeButton').addEventListener('click', function() {
   onStrobeButtonClick();
+});
+document.querySelector('#mistButton').addEventListener('click', function() {
+  onMistButtonClick();
 });
 
 document.querySelector('#slowButton').addEventListener('click', function() {
