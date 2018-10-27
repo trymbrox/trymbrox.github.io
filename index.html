@@ -85,6 +85,9 @@ body {
 <div align="center">
 <button class="button" id="fastButton">Fast</button>
 </div>
+<div align="center">
+<button class="button" id="partyButton">Party</button>
+</div>
 
 </body>
 </html>
@@ -252,6 +255,25 @@ function onFastButtonClick(){
   });
 }
 
+function onPartyButtonClick(){
+  if(!CharacteristicTx)
+  {
+    log("Device is not connected, push the connect button.");
+    return;
+  }
+  
+  let encoder = new TextEncoder('utf-8');
+  let value = "party";
+  CharacteristicTx.writeValue(encoder.encode(value))
+
+  .then(_ => {
+    log('sent: ' + value);
+  })
+  .catch(error => {
+    log('Argh! ' + error);
+  });
+}
+
 function onSlowButtonClick(){
   if(!CharacteristicTx)
   {
@@ -296,7 +318,9 @@ document.getElementById('fastButton').addEventListener('click', function() { //p
 document.querySelector('#fastButton').addEventListener('click', function() {
   onFastButtonClick();
 });
-
+document.querySelector('#partyButton').addEventListener('click', function() {
+  onPartyButtonClick();
+});
 
 document.querySelector('#slowButton').addEventListener('click', function() {
   onSlowButtonClick();
